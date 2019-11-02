@@ -49,9 +49,11 @@ function mapParks(responseJson, max) {
         let park = responseJson.data[i];
         let park_full_name = park.fullName;
         console.log(`name: ${park_full_name}`);
-        let lat = park.latLong.slice(4, 14);
+        let lat = park.latLong.match(/[0-9.-]+/);
         console.log(`lat: ${lat}`);
-        let long = park.latLong.slice(22, 31);
+        let long = park.latLong.match(/[0-9.-]+$/);
+        //if long is positive, make negative
+        //if long ends with a decimal, add a 0
         console.log(`long: ${long}`);
         let park_url = park.url;
 
