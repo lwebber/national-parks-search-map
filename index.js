@@ -2,17 +2,15 @@
 
 const apiKey = "qxerkHGC1cOFXxcU0XMPH5FBDsDatsjhbLJby4gd";
 
-const searchURL = 'https://developer.nps.gov/api/v1/parks?api_key=qxerkHGC1cOFXxcU0XMPH5FBDsDatsjhbLJby4gd&stateCode=CA&limit=2';
+const searchURL = `https://developer.nps.gov/api/v1/parks`;
 
-let mymap = L.map('mapid').setView([36, -100], 4);
+const mymap = L.map('mapid').setView([36, -100], 4);
 
-
-
-/*function formatQueryParams(params) {
-  const queryItems = Object.keys(params)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-  return queryItems.join('&');
-}*/
+function formatQueryParams(params) {
+    const queryItems = Object.keys(params)
+        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    return queryItems.join('&');
+}
 
 function displayResults(responseJson, max) {
     // if there are previous results, remove them
@@ -60,21 +58,16 @@ function mapParks(responseJson) {
 
 }
 
-function getParks(query, max = 10) {
-    /* const params = {
-       q: query,
-       language: "en",
-     };*/
-    /*const queryString = formatQueryParams(params)*/
-    /*const url = searchURL + '?' + queryString;*/
-    const url = searchURL;
+function getParks(states, max = 10) {
+    const params = {
+        api_key: apiKey,
+        stateCode: states,
+        limit: max,
+    }
+    const queryString = formatQueryParams(params)
+    const url = searchURL + '?' + queryString;
 
     console.log(url);
-
-    /*const options = {
-      headers: new Headers({
-        "X-Api-Key": apiKey})
-    };*/
 
     fetch(url)
         .then(response => {
@@ -100,11 +93,11 @@ function watchForm() {
 
     $('form').submit(event => {
         event.preventDefault();
-        const values = $('#select').val();
-        console.log(values);
+        const states = $('#select').val().join(',');
+        console.log(states);
         const max = $('#max').val();
         console.log(max);
-        getParks(values, max);
+        getParks(states, max);
     });
 
 }

@@ -59,7 +59,8 @@ img {
 .container,
 header,
 form,
-#results {
+#results,
+.error-message {
     margin: 0 auto;
     max-width: 90%;
     margin-left: auto;
