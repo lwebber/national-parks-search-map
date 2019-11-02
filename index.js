@@ -31,7 +31,7 @@ function displayResults(responseJson, max) {
     //display the results section  
     $('#results').removeClass('hidden');
     paintMap();
-    mapParks(responseJson);
+    mapParks(responseJson, max);
 }
 
 function paintMap() {
@@ -44,16 +44,22 @@ function paintMap() {
     $('#mapid').show();
 }
 
-function mapParks(responseJson) {
-    for (let i = 0; i < responseJson.data.length & i < max; i++) {
-        //figure out lat long here -prse lat long
+function mapParks(responseJson, max) {
+    console.log('mapParks ran');
+    for (let i = 0; i < max; i++) {
         let park = responseJson.data[i];
-        let lat = '';
-        let long = '';
-        let park_url = '';
-        let park_full_name = '';
-        let parkmarker = L.marker([37, -110]).bindPopup('<a href="park_url" target="_blank">park_full_name</a>');
-        parkmarker.addTo(myMap)
+
+        let lat = park.latLong.slice(4, 15);
+        console.log(`lat: ${lat}`);
+        let long = park.latLong.slice(22, 31);
+        console.log(`long: ${long}`);
+        let park_url = park.url;
+        console.log(`url: ${park_url}`);
+        let park_full_name = park.fullName;
+        console.log(`name: ${park_full_name}`);
+
+        let parkmarker = L.marker([lat, long]).bindPopup(`<a href="${park_url}" target="_blank">${park_full_name}</a>`);
+        parkmarker.addTo(myMap);
     }
 
 }
